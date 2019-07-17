@@ -21,7 +21,7 @@ with open(storage_path, 'r+') as f:
 if args.val == None and args.key in data:
     print(data[args.key])
 else:
-    if (args.key in data):
+    if (args.key in data and data[args.key] != None):
         data[args.key] += ', ' + args.val
     else:
         data[args.key] = args.val

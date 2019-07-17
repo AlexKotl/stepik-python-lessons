@@ -3,8 +3,8 @@ import functools
 
 def to_json(func):
     @functools.wraps(func)
-    def wrapped():
-        return json.dumps(func())
+    def wrapped(*kargs, **kwargs):
+        return json.dumps(func(*kargs, **kwargs))
     return wrapped
 
 # @to_json
