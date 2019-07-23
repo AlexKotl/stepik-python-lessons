@@ -5,13 +5,13 @@ class Matrix:
         self.matrix = [[None]]
         self.MAX_SIZE = max_size or self.MAX_SIZE
         
-    def __extend_matrix(self):
+    def __extend_matrix(self, reduce=False):
         list = []
         for row in self.matrix:
             for el in row:
                 list.append(el)
         
-        self.matrix = self.__create_matrix(len(self.matrix) + 1)
+        self.matrix = self.__create_matrix(len(self.matrix) + (1 if not reduce else -1))
         
         for el in list:
             self.append(el)
@@ -38,7 +38,24 @@ class Matrix:
         return matrix
 
     def pop(self):
-        pass
+        size = len(self.matrix)
+        if size == 1 and self.matrix[0][0] == None:
+            raise IndexError("Matrix has no elements")
+        
+        for x in range(size - 1, -1, -1):
+            for y in range(size - 1, -1, -1):
+                if self.matrix[x][y] != None:
+                    
+                    el = self.matrix[x][y]
+                    self.matrix[x][y] = None
+                    
+                    # check if we need to reduce
+                    sum = 0
+                    for el in self.matrix[size - 1]:
+                        sum += el if el != None else 0
+                    if sum == 0: 
+                        self.__extend_matrix(True)
+                    return el
 
     def __str__(self):
         result = ''

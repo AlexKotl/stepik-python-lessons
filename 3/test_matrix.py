@@ -6,5 +6,5 @@ for i in range(1, 4):
     print(matrix)
     print('*' * 10)
     
-#matrix.pop()
-#print(matrix)
+matrix.pop()
+print(matrix)
