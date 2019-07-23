@@ -61,10 +61,13 @@ class Matrix:
                     self.matrix[x][y] = None
                     
                     # check if we need to reduce
-                    sum = 0
-                    for el in self.matrix[size - 1]:
-                        sum += el if el != None else 0
-                    if sum == 0: 
+                    el_count = 0
+                    for x in range(size):
+                        for y in range(size):
+                            if self.matrix[x][y] != None:
+                                el_count += 1
+                    
+                    if el_count + (size - 1) <= (size - 1)**2: 
                         self.__extend_matrix(True)
                     return found
 
