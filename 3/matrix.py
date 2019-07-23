@@ -1,3 +1,5 @@
+from collections import Iterable
+
 class Matrix:
     MAX_SIZE = 1000  
 
@@ -29,13 +31,14 @@ class Matrix:
         for x in range(size):
             for y in range(size):
                 if self.matrix[x][y] == None:
-                    if x == size - 1:
+                    if x == size - 1 and size < self.MAX_SIZE:
                         self.__extend_matrix()
                         self.append(element)
                         return self.matrix
                     self.matrix[x][y] = element
                     return self.matrix
-        return matrix
+
+        raise IndexError("Matrix is full")
 
     def pop(self):
         size = len(self.matrix)
@@ -70,4 +73,11 @@ class Matrix:
 
     @classmethod
     def from_iter(cls, iter_obj, max_size=None):
-        pass
+        if not isinstance(iter_obj, Iterable):
+            raise TypeError("Object not iterable. {} given".format(type(iter_obj)))
+        
+        matrix = cls(max_size)   
+        for el in iter_obj:
+            matrix.append(el)
+        return matrix
+        
