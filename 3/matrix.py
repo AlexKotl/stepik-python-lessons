@@ -15,11 +15,14 @@ class Matrix:
         if element is None:
             return self.matrix
         
-        index = self.matrix.index(None)
+        try:
+            index = self.matrix.index(None)
+        except ValueError:
+            raise IndexError("Matrix is full")
 
         self.matrix[index] = element
         size = int(len(self.matrix) ** 0.5)
-        if index == size * (size - 1):
+        if index == size * (size - 1) and size < self.MAX_SIZE:
             self.matrix.extend([None] * ((size + 1) ** 2 - len(self.matrix)))
         
         return self.matrix
@@ -50,6 +53,7 @@ class Matrix:
             raise TypeError("Object not iterable. {} given".format(type(iter_obj)))
         
         matrix = cls(max_size)   
+
         for el in iter_obj:
             matrix.append(el)
         return matrix
