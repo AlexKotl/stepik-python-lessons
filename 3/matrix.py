@@ -11,12 +11,20 @@ class Matrix:
         list = []
         for row in self.matrix:
             for el in row:
-                list.append(el)
+                if el != None:
+                    list.append(el)
         
-        self.matrix = self.__create_matrix(len(self.matrix) + (1 if not reduce else -1))
-        
-        for el in list:
-            self.append(el)
+        new_size = len(self.matrix) + (1 if not reduce else -1)
+        self.matrix = self.__create_matrix(new_size)
+            
+        for x in range(new_size):
+            for y in range(new_size):
+                if len(list) == 0:
+                    return
+                
+                el = list.pop(0)
+                self.matrix[x][y] = el
+
         return self.matrix
         
     def __create_matrix(self, size):    
@@ -49,7 +57,7 @@ class Matrix:
             for y in range(size - 1, -1, -1):
                 if self.matrix[x][y] != None:
                     
-                    el = self.matrix[x][y]
+                    found = self.matrix[x][y]
                     self.matrix[x][y] = None
                     
                     # check if we need to reduce
@@ -58,7 +66,7 @@ class Matrix:
                         sum += el if el != None else 0
                     if sum == 0: 
                         self.__extend_matrix(True)
-                    return el
+                    return found
 
     def __str__(self):
         result = ''
