@@ -5,9 +5,11 @@ class Book:
         self.size = len(self.content)
 
     def read(self, page):
+        if page < 0:
+            raise PageNotFoundError('Page should be greater than zero')
         try:
             return self.content[page]
-        except IndexError:
+        except:
             raise PageNotFoundError(page)
 
     def write(self, page, text):
@@ -58,6 +60,8 @@ class Notebook(Book):
 
     def write(self, page, text):
         """делает запись текста text на страницу с номером page """
+        if page < 0:
+            raise PageNotFoundError('Page should be greater than zero')
         try:
             if len(text) + len(self.content[page]) > self.max_sign:
                 raise TooLongTextError
@@ -74,10 +78,7 @@ class Person:
 
     def read(self, book, page):
         """читаем страницу с номером page в книге book"""
-        try:
-            return book.content[page]
-        except IndexError:
-            raise PageNotFoundError(page)
+        return book.read(page)
 
     def write(self, book, page, text):
         """пишем на страницу с номером page в книге book"""
