@@ -24,3 +24,10 @@ print(person.read(notebook, 10))
 too_long_text = alphabet * 1000
 #person.write(notebook, 0, too_long_text)
 
+novel = Novel('Grin', 1925, 'Gold chain', content)
+# person.write(novel, 10, 'new_value')
+
+person.set_bookmark(novel, 10)
+print(person.get_bookmark(novel))
+person.del_bookmark(novel)
+print(person.get_bookmark(novel))

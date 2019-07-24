@@ -43,7 +43,7 @@ class Novel(Book):
 
     def write(self, page, text):
         """делает запись текста text на страницу page """
-        pass
+        raise PermissionDeniedError("Novel cant be modified")
 
 
 class Notebook(Book):
@@ -67,10 +67,10 @@ class Notebook(Book):
 
     def write(self, page, text):
         """делает запись текста text на страницу с номером page """
+        if len(text) > self.max_sign:
+            raise TooLongTextError
         try:
-            if len(text) > self.max_sign:
-                raise TooLongTextError
-            self.content[page] = text
+            self.content[page] += text
         except:
             raise PageNotFoundError(page)
 
@@ -90,21 +90,25 @@ class Person:
 
     def write(self, book, page, text):
         """пишем на страницу с номером page в книге book"""
-        if len(text) > book.max_sign:
-            raise TooLongTextError
-        try:
-            book.content[page] += text
-        except:
-            raise PageNotFoundError(page)
+        book.write(page, text)
 
     def set_bookmark(self, book, page):
         """устанавливаем закладку в книгу book на страницу с номером page"""
+        book.bookmark[self] = page
 
     def get_bookmark(self, book):
         """получаем номер страницы установленной закладки в книге book"""
+        try:
+            return book.bookmark[self]
+        except:
+            raise PageNotFoundError
 
     def del_bookmark(self, book):
         """удаляет закладку из книги book"""
+        try:
+            del book.bookmark[self]
+        except:
+            raise PageNotFoundError
         
 # ERRORS
 
