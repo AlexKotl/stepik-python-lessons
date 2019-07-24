@@ -15,7 +15,10 @@ class Novel(Book):
     """класс описывающий книгу и методы работы с ней"""
 
     def __init__(self, *args, **kwargs):
-        """конструктор"""
+        self.author = kwargs['author']
+        self.year = kwargs['year']
+        self.bookmark = {}
+        self.author = kwargs['author']
 
     def read(self, *args, **kwargs):
         """возвращает страницу"""
@@ -25,6 +28,10 @@ class Novel(Book):
 
     def get_bookmark(self, *args, **kwargs):
         """получает номер страницы установленной закладки в книге book"""
+        try:
+            return self.bookmark[kwargs['user']]
+        except:
+            raise PageNotFoundError
 
     def write(self, *args, **kwargs):
         """делает запись текста text на страницу page """
@@ -34,9 +41,12 @@ class Novel(Book):
 
 class Notebook(Book):
     """класс описывающий тетрадь и методы работы с ней"""
+    MAX_SIGN = 2000
+    SIZE = 12
 
     def __init__(self, *args, **kwargs):
-        """конструктор"""
+        self.max_sign = kwargs['max_sign'] or self.MAX_SIGN
+        self.size = len(kwargs['content']) or self.SIZE
 
     def read(self, *args, **kwargs):
         """возвращает страницу с номером page"""
@@ -50,6 +60,7 @@ class Person:
 
     def __init__(self, name):
         """конструктор"""
+        self.name = name
 
     def read(self, book, page):
         """читаем страницу с номером page в книге book"""
