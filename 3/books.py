@@ -19,8 +19,6 @@ class Novel(Book):
         self.author = author
         self.year = year
         self.bookmark = {}
-        self.title = title
-        self.content = content or []
 
     def read(self, page):
         """возвращает страницу"""
@@ -51,27 +49,28 @@ class Notebook(Book):
     MAX_SIGN = 2000
     SIZE = 12
 
-    def __init__(self, title, size, max_sign, content):
-        self.title = title
+    def __init__(self, title, size=None, max_sign=None, content=None):
+        super().__init__(title, content)
         self.max_sign = max_sign or self.MAX_SIGN
-        self.size = len(content) if len(content) > 0 else size
+        self.size = len(content) if content!=None and len(content) > 0 else size
         self.size = self.size or self.SIZE
-        self.content = content
+        if content == None:
+            self.content = ['' for _ in range(self.size)]
 
     def read(self, page):
         """возвращает страницу с номером page"""
         try:
             return self.content[page]
-        except:
+        except IndexError:
             raise PageNotFoundError(page)
 
     def write(self, page, text):
         """делает запись текста text на страницу с номером page """
-        if len(text) > self.max_sign:
-            raise TooLongTextError
         try:
+            if len(text) + self.content[page] > self.max_sign:
+                raise TooLongTextError
             self.content[page] += text
-        except:
+        except IndexError:
             raise PageNotFoundError(page)
 
 
@@ -85,7 +84,7 @@ class Person:
         """читаем страницу с номером page в книге book"""
         try:
             return book.content[page]
-        except:
+        except IndexError:
             raise PageNotFoundError(page)
 
     def write(self, book, page, text):
@@ -100,14 +99,14 @@ class Person:
         """получаем номер страницы установленной закладки в книге book"""
         try:
             return book.bookmark[self]
-        except:
+        except IndexError:
             raise PageNotFoundError
 
     def del_bookmark(self, book):
         """удаляет закладку из книги book"""
         try:
             del book.bookmark[self]
-        except:
+        except IndexError:
             raise PageNotFoundError
         
 # ERRORS
