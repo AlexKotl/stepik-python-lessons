@@ -5,7 +5,10 @@ class Book:
         self.size = len(self.content)
 
     def read(self, page):
-        raise NotImplementedError
+        try:
+            return self.content[page]
+        except IndexError:
+            raise PageNotFoundError(page)
 
     def write(self, page, text):
         raise NotImplementedError
@@ -19,10 +22,6 @@ class Novel(Book):
         self.author = author
         self.year = year
         self.bookmark = {}
-
-    def read(self, page):
-        """возвращает страницу"""
-        pass
 
     def set_bookmark(self, person, page):
         """устанавливает закладку в книгу book"""
@@ -57,17 +56,10 @@ class Notebook(Book):
         if content == None:
             self.content = ['' for _ in range(self.size)]
 
-    def read(self, page):
-        """возвращает страницу с номером page"""
-        try:
-            return self.content[page]
-        except IndexError:
-            raise PageNotFoundError(page)
-
     def write(self, page, text):
         """делает запись текста text на страницу с номером page """
         try:
-            if len(text) + self.content[page] > self.max_sign:
+            if len(text) + len(self.content[page]) > self.max_sign:
                 raise TooLongTextError
             self.content[page] += text
         except IndexError:
