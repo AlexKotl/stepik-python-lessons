@@ -14,12 +14,13 @@ class Book:
 class Novel(Book):
     """класс описывающий книгу и методы работы с ней"""
 
-    def __init__(self, author, year, title, content):
+    def __init__(self, author, year, title, content=None):
+        super().__init__(title, content)
         self.author = author
         self.year = year
         self.bookmark = {}
         self.title = title
-        self.content = content
+        self.content = content or []
 
     def read(self, page):
         """возвращает страницу"""
@@ -59,9 +60,19 @@ class Notebook(Book):
 
     def read(self, page):
         """возвращает страницу с номером page"""
+        try:
+            return self.content[page]
+        except:
+            raise PageNotFoundError(page)
 
     def write(self, page, text):
         """делает запись текста text на страницу с номером page """
+        try:
+            if len(text) > self.max_sign:
+                raise TooLongTextError
+            self.content[page] = text
+        except:
+            raise PageNotFoundError(page)
 
 
 class Person:
@@ -72,9 +83,19 @@ class Person:
 
     def read(self, book, page):
         """читаем страницу с номером page в книге book"""
+        try:
+            return book.content[page]
+        except:
+            raise PageNotFoundError(page)
 
     def write(self, book, page, text):
         """пишем на страницу с номером page в книге book"""
+        if len(text) > book.max_sign:
+            raise TooLongTextError
+        try:
+            book.content[page] += text
+        except:
+            raise PageNotFoundError(page)
 
     def set_bookmark(self, book, page):
         """устанавливаем закладку в книгу book на страницу с номером page"""
@@ -84,3 +105,20 @@ class Person:
 
     def del_bookmark(self, book):
         """удаляет закладку из книги book"""
+        
+# ERRORS
+
+class BookIOErrors(Exception):
+    pass
+    
+class NotExistingExtensionError(BookIOErrors):
+    pass
+
+class PermissionDeniedError(BookIOErrors):
+    pass
+    
+class PageNotFoundError(BookIOErrors):
+    pass
+    
+class TooLongTextError(BookIOErrors):
+    pass
