@@ -1,33 +1,41 @@
 from books import *
 
 class AdvancedPerson(Person):
-    def search(book, name_page):
-        """возвращает номер страницы name_page из книги book"""
+    def __init__(self, name):
+        super().__init__(name)
+        
+    def search(self, book, name_page):
+        return book.search(name_page)
 
     def read(self, book, page):
-        # переопределите метод
-        pass
+        if isinstance(page, int):
+            return super().read(book, page)
+        else:
+            return super().read(book, self.search(book, page))
 
     def write(self, book, page, text):
-        # переопределите метод
-        pass
+        if isinstance(page, int):
+            return super().write(book, page, text)
+        else:
+            return super().write(book, self.search(book, page), text)
 
 
 class NovelWithTable(Novel):
     """класс - книга с оглавлением"""
 
-    def __init__(self, title, content=None, table=None):
-        # переопределите метод
-        pass
+    def __init__(self, author, year, title, content=None, table=None):
+        super().__init__(author, year, title, content)
+        self.table = table or {}
 
     def search(self, name_page):
-        # напишите вашу реализацию метода здесь
-        pass
+        if name_page not in self.table:
+            raise PageNotFoundError
+        return self.table[name_page]
 
     def add_chapter(self, chapter, page):
-        # напишите вашу реализацию метода здесь
-        pass
+        return self.table.update({ chapter: page })
 
     def remove_chapter(self, chapter):
-        # напишите вашу реализацию метода здесь
-        pass 
+        if chapter not in self.table:
+            raise PageNotFoundError
+        del self.table[chapter]
