@@ -14,7 +14,15 @@ class Book:
 
     def write(self, page, text):
         raise NotImplementedError
+        
+    def set_bookmark(self, person, page):
+        raise NotExistingExtensionError
 
+    def get_bookmark(self, person):
+        raise NotExistingExtensionError
+        
+    def del_bookmark(self, person):
+        raise NotExistingExtensionError
 
 class Novel(Book):
     """класс описывающий книгу и методы работы с ней"""
@@ -26,19 +34,19 @@ class Novel(Book):
         self.bookmark = {}
 
     def set_bookmark(self, person, page):
-        """устанавливает закладку в книгу book"""
-        pass
+        self.bookmark.update({ person: page })
 
     def get_bookmark(self, person):
-        """получает номер страницы установленной закладки в книге book"""
-        try:
-            return self.bookmark[person]
-        except:
+        if person not in self.bookmark:
             raise PageNotFoundError
+        return self.bookmark[person]
 
     def del_bookmark(self, person):
-        """удаляет закладку читателя person, если она установлена"""
-        pass
+        try:
+            self.bookmark[person] # try to throw error if not exists
+            self.bookmark.pop(person)
+        except IndexError:
+            raise PageNotFoundError
 
     def write(self, page, text):
         """делает запись текста text на страницу page """
@@ -82,25 +90,19 @@ class Person:
 
     def write(self, book, page, text):
         """пишем на страницу с номером page в книге book"""
-        book.write(page, text)
+        return book.write(page, text)
 
     def set_bookmark(self, book, page):
         """устанавливаем закладку в книгу book на страницу с номером page"""
-        book.bookmark[self] = page
+        return book.set_bookmark(self, page)
 
     def get_bookmark(self, book):
         """получаем номер страницы установленной закладки в книге book"""
-        try:
-            return book.bookmark[self]
-        except IndexError:
-            raise PageNotFoundError
+        return book.get_bookmark(self)
 
     def del_bookmark(self, book):
         """удаляет закладку из книги book"""
-        try:
-            del book.bookmark[self]
-        except IndexError:
-            raise PageNotFoundError
+        return book.del_bookmark(self)
         
 # ERRORS
 
