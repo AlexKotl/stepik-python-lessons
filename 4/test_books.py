@@ -14,13 +14,13 @@ print(f"{id(page)}, {id(new_page)}")
 page1 = Page('text')
 print(len(page1))
 print(page1 > page)
-# page += 's' * 3000
 
 content = [Page('Page {}'.format(str(num))) for num in range(1,10)]
 book = Book('my_book', content)
 print(len(book))
 
 print(book[1])
+
 book[9] = 'Last page'
 print(book[9]) # Last page
 

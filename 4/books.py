@@ -10,8 +10,11 @@ class Page:
         self._text += obj
         return self
         
+    # def __iadd__(self, other):
+    #     return self.__add__(other)
+        
     def __str__(self):
-        return self._text
+        return str(self._text)
     
     def __hash__(self):
         return hash(self._text)
@@ -50,8 +53,12 @@ class Book:
         return self._content[index - 1]
     
     def __setitem__(self, index, value):
-        self._content[index - 1] = value
-        return self._content[index - 1]
+        #print(f"setting value {type(value)}")
+        if isinstance(value, Page):
+            self._content[index - 1] = value
+        else:
+            self._content[index - 1] = Page(value)
+        
 
 
 class BookIOErrors(Exception):
