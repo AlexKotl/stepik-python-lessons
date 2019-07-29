@@ -8,7 +8,5 @@ s = 'string_' + page
 print(type(s))
 print(s)
 
-# new_page = page + 123
-
 new_page = page + '123'
-print(id(page) == id(new_page))
+print(f"{id(page)}, {id(new_page)}")

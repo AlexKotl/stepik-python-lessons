@@ -5,11 +5,9 @@ class Page:
         self.max_sign = max_sign
         
     def __add__(self, obj):
-        print("obj is instance of Page: {}".format(isinstance(obj, Page)))
-        new_text = self._text + obj
-        if len(new_text) > self.max_sign:
+        if len(self._text + obj) > self.max_sign:
             raise TooLongTextError
-        self._text = new_text
+        self._text += obj
         return self
         
     def __str__(self):
@@ -17,6 +15,9 @@ class Page:
     
     def __hash__(self):
         return hash(self._text)
+        
+    def __radd__(self, obj):
+        return obj + self._text
 
 
 class Book:
