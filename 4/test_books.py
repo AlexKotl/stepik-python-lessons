@@ -1,7 +1,7 @@
 from books import *
 
 page = Page('text')
-page += '_new_text'
+page += 123
 print(page)
 
 s = 'string_' + page
@@ -28,3 +28,6 @@ book[9] += '\nnew_string'
 print(book[9])
 
 print(type(book[9]))
+
+book2 = Book('book2')
+print(book2 == book)
