@@ -8,7 +8,7 @@ class Client:
         result = {}
         try:
             self.sock.send(f"get {key}\n".encode())
-            data = self.sock.recv(1024).decode("utf8").split("\n")
+            data = self.sock.recv(2048).decode("utf8").split("\n")
             if data[0] == 'error':
                 raise ClientError
             for row in data[1:]:
@@ -32,6 +32,9 @@ class Client:
         timestamp = timestamp or str(int(time.time()))
         string = f"put {key} {value} {timestamp}\n"
         self.sock.sendall(string.encode())
+        data = self.sock.recv(2048).decode("utf8").split("\n")
+        if data[0] == 'error':
+            raise ClientError
     
 class ClientError(Exception):
     pass
