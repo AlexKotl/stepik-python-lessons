@@ -4,21 +4,32 @@ class ClientServerProtocol(asyncio.Protocol):
     data = {}
     
     def _put(self, key, value, timestamp=None):
-        print(f'putting {key} {value}')
+        if key not in self.data:
+            self.data[key] = []
+        self.data[key].append((key, value, timestamp))
         
     def _get(self, key):
-        print(f'getting {key}')
+        result = 'ok\n'
+        if key == '*':
+            for metric in self.data.values():
+                if len(metric) > 0:
+                    for key, value, timestamp in metric:
+                        result += f"{key} {value} {timestamp}\n"
+        elif key in self.data:
+            for key, value, timestamp in self.data[key]:
+                result += f"{key} {value} {timestamp}\n"
+        result += "\n"
+        return result
         
     def process_data(self, data):
         params = data.split(' ')
         method = params[0]
-        key = params[1]
+        key = params[1].rstrip()
         if method == 'get':
-            self._get(key)
-            return "ok\n\n"
+            return self._get(key)
         elif method == 'put':
-            value = params[2]
-            timestamp = None if len(params) < 4 else params[3]
+            value = params[2].rstrip()
+            timestamp = None if len(params) < 4 else params[3].rstrip()
             self._put(key, value, timestamp)
             return "ok\n\n"
         else:
