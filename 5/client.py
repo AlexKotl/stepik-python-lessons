@@ -1,4 +1,5 @@
 import socket
+import time
 
 class Client:
     def __init__(self, host, port, timeout=None):
@@ -37,4 +38,10 @@ class Client:
             raise ClientError
     
 class ClientError(Exception):
+    pass
+
+class ClientSocketError(ClientError):
+    pass
+
+class ClientProtocolError(ClientError):
     pass
