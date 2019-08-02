@@ -6,7 +6,9 @@ class ClientServerProtocol(asyncio.Protocol):
     def _put(self, key, value, timestamp=None):
         if key not in self.data:
             self.data[key] = []
-        self.data[key].append((key, value, timestamp))
+        new_record = (key, value, timestamp)
+        if new_record not in self.data[key]:
+            self.data[key].append(new_record)
         
     def _get(self, key):
         result = 'ok\n'
