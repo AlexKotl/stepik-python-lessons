@@ -26,7 +26,26 @@ def build_tree(start, end, path):
 def build_bridge(start, end, path):
     files = build_tree(start, end, path)
     bridge = []
-    # TODO Добавить нужные страницы в bridge
+
+    level = [-1] * len(files) 
+    #список уровней вершин
+
+    def bfs(s, level):
+        level[s] = 0
+        queue = [s]
+        while queue:
+            v = queue.pop(0)
+            for w in files[v]: 
+                if level[w] is -1: 
+                    queue.append(w) 
+                    level[w] = level[v] + 1 
+
+    for i in range(len(files)):
+        if level[i] is -1:
+            bfs(i, level)
+
+    print(level[2]) 
+    
     return bridge
 
 
