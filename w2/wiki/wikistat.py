@@ -5,11 +5,20 @@ import os
 
 # Вспомогательная функция, её наличие не обязательно и не будет проверяться
 def build_tree(start, end, path):
-    # Искать ссылки можно как угодно, не обязательно через re
     link_re = re.compile(r"(?<=/wiki/)[\w()]+")
-    # Словарь вида {"filename1": None, "filename2": None, ...}
     files = dict.fromkeys(os.listdir(path))
-    # TODO Проставить всем ключам в files правильного родителя в значение, начиная от start
+    
+    # Проставить всем ключам в files правильного родителя в значение, начиная от start
+    for file in files:
+        content = open(os.path.join(path, file), "r").read()
+        for url in link_re.findall(content):
+            # skip the rest of urls
+            if url not in files:
+                continue
+            if files[url] == None:
+                files[url] = []
+            if file not in files[url] and file != url:
+                files[url].append(file)
     return files
 
 
