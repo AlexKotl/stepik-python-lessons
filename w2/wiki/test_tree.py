@@ -1,4 +1,3 @@
 import wikistat
 
-bridge = wikistat.build_bridge('Stone_Age', 'Python_(programming_language)', 'wiki')
-print(bridge)
+print(wikistat.parse('Stone_Age', 'Stone_Age', 'wiki'))
