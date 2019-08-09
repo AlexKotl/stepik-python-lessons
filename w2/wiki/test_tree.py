@@ -1,3 +1,3 @@
 import wikistat
 
-print(wikistat.parse('Stone_Age', 'Stone_Age', 'wiki'))
+print(wikistat.parse('1_Test', '1_Test', 'wiki'))

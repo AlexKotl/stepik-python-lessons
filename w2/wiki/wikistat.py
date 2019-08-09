@@ -53,7 +53,7 @@ def parse(start, end, path):
         bridge = [start]
     else:
         bridge = build_bridge(start, end, path)
-        
+    
     out = {}
     for file in bridge:
         with open(os.path.join(path, file)) as data:
@@ -68,7 +68,11 @@ def parse(start, end, path):
                 imgs += 1
                 
         # Количество заголовков, первая буква текста внутри которого: E, T или C
-        headers = 10
+        headers = 0
+        for header in body.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+            if header.get_text()[:1] in ('E', 'T', 'C'):
+                headers += 1
+
         # Длина максимальной последовательности ссылок, между которыми нет других тегов
         linkslen = 15
         # Количество списков, не вложенных в другие списки
