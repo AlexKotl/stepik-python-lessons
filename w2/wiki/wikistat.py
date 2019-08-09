@@ -62,7 +62,11 @@ def parse(start, end, path):
         body = soup.find(id="bodyContent")
 
         # Количество картинок (img) с шириной (width) не меньше 200
-        imgs = 5
+        imgs = 0
+        for img in body.find_all('img', width=True):
+            if int(img['width']) >= 200:
+                imgs += 1
+                
         # Количество заголовков, первая буква текста внутри которого: E, T или C
         headers = 10
         # Длина максимальной последовательности ссылок, между которыми нет других тегов
