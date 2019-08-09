@@ -22,31 +22,34 @@ def build_tree(start, end, path):
     return files
 
 
+def bfs2(graph, start, goal):
+    """
+    finds a shortest path in undirected `graph` between `start` and `goal`. 
+    If no path is found, returns `None`
+    """
+    if start == goal:
+        return [start]
+    visited = {start}
+    queue = [(start, [])]
+
+    while queue:
+        current, path = queue.pop(0)
+        visited.add(current)
+        for neighbor in graph[current]:
+            if neighbor == goal:
+                return path + [current, neighbor]
+            if neighbor in visited:
+                continue
+            queue.append((neighbor, path + [current]))
+            visited.add(neighbor)   
+    return None  # no path found. not strictly needed
+    
 # Вспомогательная функция, её наличие не обязательно и не будет проверяться
 def build_bridge(start, end, path):
     files = build_tree(start, end, path)
-    bridge = []
-
-    level = {key: -1 for key in files}
-
-    def bfs(start, level):
-        level[start] = 0
-        queue = [start]
-        while queue:
-            v = queue.pop(0)
-            for w in files[v]: 
-                if level[w] is -1: 
-                    queue.append(w) 
-                    level[w] = level[v] + 1 
-
-    for i in files:
-        if level[i] is -1:
-            bfs(i, level)
-
-    print(level) 
+    bridge = bfs2(files, start, end) or []
     
     return bridge
-
 
 def parse(start, end, path):
     """
