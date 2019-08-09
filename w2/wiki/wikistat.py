@@ -27,12 +27,11 @@ def build_bridge(start, end, path):
     files = build_tree(start, end, path)
     bridge = []
 
-    level = [-1] * len(files) 
-    #список уровней вершин
+    level = {key: -1 for key in files}
 
-    def bfs(s, level):
-        level[s] = 0
-        queue = [s]
+    def bfs(start, level):
+        level[start] = 0
+        queue = [start]
         while queue:
             v = queue.pop(0)
             for w in files[v]: 
@@ -40,11 +39,11 @@ def build_bridge(start, end, path):
                     queue.append(w) 
                     level[w] = level[v] + 1 
 
-    for i in range(len(files)):
+    for i in files:
         if level[i] is -1:
             bfs(i, level)
 
-    print(level[2]) 
+    print(level) 
     
     return bridge
 
