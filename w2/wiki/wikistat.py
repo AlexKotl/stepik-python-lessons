@@ -10,15 +10,15 @@ def build_tree(start, end, path):
     
     # Проставить всем ключам в files правильного родителя в значение, начиная от start
     for file in files:
+        if files[file] == None:
+            files[file] = []
         content = open(os.path.join(path, file), "r").read()
         for url in link_re.findall(content):
             # skip the rest of urls
             if url not in files:
                 continue
-            if files[url] == None:
-                files[url] = []
-            if file not in files[url] and file != url:
-                files[url].append(file)
+            if url not in files[file] and file != url:
+                files[file].append(url)
     return files
 
 
