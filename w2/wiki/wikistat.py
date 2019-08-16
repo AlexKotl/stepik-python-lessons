@@ -74,7 +74,11 @@ def parse(start, end, path):
                 headers += 1
 
         # Длина максимальной последовательности ссылок, между которыми нет других тегов
-        linkslen = 15
+        linkslen = 0
+        for a in body.find_all('a'):
+            current_streak = len(a.find_next_siblings('a')) + 1
+            linkslen = current_streak if current_streak > linkslen else linkslen
+            
         # Количество списков, не вложенных в другие списки
         lists = 20
 
