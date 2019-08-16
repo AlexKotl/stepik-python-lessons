@@ -80,7 +80,10 @@ def parse(start, end, path):
             linkslen = current_streak if current_streak > linkslen else linkslen
             
         # Количество списков, не вложенных в другие списки
-        lists = 20
+        lists = 0
+        for list in body.find_all(['ul', 'ol']):
+            if list.find_parent(['ul', 'ol']) == None:
+                lists += 1
 
         out[file] = [imgs, headers, linkslen, lists]
 
