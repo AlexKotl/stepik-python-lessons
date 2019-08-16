@@ -5,14 +5,14 @@ import os
 
 # Вспомогательная функция, её наличие не обязательно и не будет проверяться
 def build_tree(start, end, path):
-    link_re = re.compile(r"(?<=/wiki/)[\w()]+")
+    link_re = re.compile(r"(?<=/" + path + "/)[\w()]+")
     files = dict.fromkeys(os.listdir(path))
     
     # Проставить всем ключам в files правильного родителя в значение, начиная от start
     for file in files:
         if files[file] == None:
             files[file] = []
-        with open(os.path.join(path, file), "r") as f:
+        with open(os.path.join(path, file), "r", encoding='utf-8', errors='ignore') as f:
             content = f.read()
             for url in link_re.findall(content):
                 # skip the rest of urls
@@ -57,7 +57,7 @@ def parse(start, end, path):
     
     out = {}
     for file in bridge:
-        with open(os.path.join(path, file)) as data:
+        with open(os.path.join(path, file), 'r') as data:
             soup = BeautifulSoup(data, "lxml")
 
         body = soup.find(id="bodyContent")
