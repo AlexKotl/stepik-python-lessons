@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Stone Age - Wikipedia</title>
+
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Stone_Age rootpage-Stone_Age skin-vector action-view" id="bodyContent">		
+    <div id="mw-page-base" class="noprint"></div>
+
+
+
+<img src='' width='400' />
+
+For tests purposes
+
+Например: <h1>End</h1> или <h5><span>Contents</span></h5>, но не <h1>About</h1> и не <h2>end</h2> и не <h3><span>1</span><span>End</span></h3>
+
+
+Например: <p><span><a></a></span>, <a></a>, <a></a></p> - тут 2 ссылки подряд, т.к. закрывающийся span прерывает последовательность. 
+<p>
+    <a><span></span></a>, <a></a>, <a></a>
+</p> - а тут 3 ссылки подяд, т.к. span находится внутри ссылки, а не между ссылками.
+
+Количество списков (ul, ol), не вложенных в другие списки. 
+Например: 
+<ol><li>1</li></ol>, 
+<ul>
+    <li>
+        <ol><li>2</li></ol>
+    </li>
+</ul> - два не вложенных списка (и один вложенный)
+
+
+</body>
