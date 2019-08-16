@@ -12,13 +12,14 @@ def build_tree(start, end, path):
     for file in files:
         if files[file] == None:
             files[file] = []
-        content = open(os.path.join(path, file), "r").read()
-        for url in link_re.findall(content):
-            # skip the rest of urls
-            if url not in files:
-                continue
-            if url not in files[file] and file != url:
-                files[file].append(url)
+        with open(os.path.join(path, file), "r") as f:
+            content = f.read()
+            for url in link_re.findall(content):
+                # skip the rest of urls
+                if url not in files:
+                    continue
+                if url not in files[file] and file != url:
+                    files[file].append(url)
     return files
 
 
