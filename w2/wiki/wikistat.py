@@ -77,7 +77,12 @@ def parse(start, end, path):
         # Длина максимальной последовательности ссылок, между которыми нет других тегов
         linkslen = 0
         for a in body.find_all('a'):
-            current_streak = len(a.find_next_siblings('a')) + 1
+            current_streak = 1
+            for tag in a.find_next_siblings():
+                if tag.name == 'a':
+                    current_streak += 1
+                else:
+                    break
             linkslen = current_streak if current_streak > linkslen else linkslen
             
         # Количество списков, не вложенных в другие списки
