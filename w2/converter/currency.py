@@ -18,5 +18,5 @@ def convert(amount, cur_from, cur_to, date, requests):
                 'value': Decimal(soup.find('CharCode', text=cur).find_next_sibling('Value').string.replace(',', '.')),
                 'nominal': int(soup.find('CharCode', text=cur).find_next_sibling('Nominal').string)
             } })
-    result = amount * data[cur_from]['nominal'] * data[cur_from]['value'] / data[cur_to]['value'] * data[cur_to]['nominal']
+    result = amount * data[cur_from]['value'] / data[cur_to]['value'] * data[cur_to]['nominal'] / data[cur_from]['nominal']
     return Decimal(result).quantize(Decimal('1.0000'))
