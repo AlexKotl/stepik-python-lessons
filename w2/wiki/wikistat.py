@@ -5,7 +5,7 @@ import os
 
 # Вспомогательная функция, её наличие не обязательно и не будет проверяться
 def build_tree(start, end, path):
-    link_re = re.compile(r"(?<=/" + path + "/)[\w()]+")
+    link_re = re.compile(r"(?<=/wiki/)[\w()]+")
     files = dict.fromkeys(os.listdir(path))
     
     # Проставить всем ключам в files правильного родителя в значение, начиная от start
