@@ -3,8 +3,9 @@ from decimal import Decimal
 
 
 def convert(amount, cur_from, cur_to, date, requests):
-    response = requests.get(f'http://www.cbr.ru/scripts/XML_daily.asp?date_req={date}')
+    response = requests.get(f'https://www.cbr.ru/scripts/XML_daily.asp', {'date_req': date})
     soup = BeautifulSoup(response.content, 'xml')
+    # print(soup.prettify())
     data = {}
     for cur in (cur_from, cur_to):
         if cur == 'RUR':
