@@ -5,7 +5,7 @@ set names utf8;
 select * from product
 
 -- 2. Выбрать названия всех автоматизированных складов
-select ...
+select name FROM store WHERE is_automated=1
 
 -- 3. Посчитать общую сумму в деньгах всех продаж
 select ...
