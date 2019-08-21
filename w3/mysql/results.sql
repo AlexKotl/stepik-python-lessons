@@ -8,17 +8,19 @@ select * from product
 select name FROM store WHERE is_automated=1
 
 -- 3. Посчитать общую сумму в деньгах всех продаж
-select ...
+select sum(total) from sale
 
 -- 4. Получить уникальные store_id всех складов, с которых была хоть одна продажа
-select ...
+select distinct store_id from store natural join sale
 
 
 -- 5. Получить уникальные store_id всех складов, с которых не было ни одной продажи
-select ...
+select distinct store_id from store left join sale using (store_id) where sale_id is null
 
 -- 6. Получить для каждого товара название и среднюю стоимость единицы товара avg(total/quantity), если товар не продавался, он не попадает в отчет.
-select ...
+select product.name, avg(total/quantity) from sale 
+natural join product
+group by product_id
 
 -- 7. Получить названия всех продуктов, которые продавались только с единственного склада
 select ...
