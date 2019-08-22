@@ -1,10 +1,15 @@
 from django.shortcuts import render
-
+from django.http import HttpResponse
 
 # Create your views here.
 
 def echo(request):
-    pass
+    print(request.GET)
+    return render(request, 'echo.html', {
+        'statement': request.META.get('X-Print-Statement', ''),
+        'get': request.GET.items(),
+        'post': request.POST.items()
+    })
 
 
 def filters(request):
