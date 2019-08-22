@@ -2,3 +2,4 @@ __pycache__
 /w2/wiki/wiki
 /w4/routing/env
 /w4/routing/db.sqlite3
+*.zip
