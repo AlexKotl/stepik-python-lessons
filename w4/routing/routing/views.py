@@ -7,4 +7,6 @@ def simple_route(request):
     
 def slug_route(request, slug):
     return HttpResponse(slug)
-    
+
+def sum_route(request, first, second):
+    return HttpResponse(int(first) + int(second))
