@@ -27,7 +27,7 @@ def sum_post_method(request):
     a = request.POST.get('a', '')
     b = request.POST.get('b', '')
     
-    if not a.isdigit() or not b.isdigit():
+    if not a.replace('-', '').isdigit() or not b.replace('-', '').isdigit():
         return HttpResponse(status=400)
     
     return HttpResponse(int(a) + int(b))

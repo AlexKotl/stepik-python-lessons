@@ -4,7 +4,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def echo(request):
-    print(request.GET)
+    # print(request.GET)
     return render(request, 'echo.html', {
         'statement': request.META.get('X-Print-Statement', ''),
         'get': request.GET.items(),
