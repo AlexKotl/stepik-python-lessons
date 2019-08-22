@@ -17,7 +17,7 @@ def sum_get_method(request):
     a = request.GET.get('a', '')
     b = request.GET.get('b', '')
     
-    if not a.isdigit() or not b.isdigit():
+    if not a.replace('-', '').isdigit() or not b.replace('-', '').isdigit():
         return HttpResponse(status=400)
     
     return HttpResponse(int(a) + int(b))
