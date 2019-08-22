@@ -21,3 +21,13 @@ def sum_get_method(request):
         return HttpResponse(status=400)
     
     return HttpResponse(int(a) + int(b))
+    
+@require_http_methods(['POST'])
+def sum_post_method(request):
+    a = request.POST.get('a', '')
+    b = request.POST.get('b', '')
+    
+    if not a.isdigit() or not b.isdigit():
+        return HttpResponse(status=400)
+    
+    return HttpResponse(int(a) + int(b))
