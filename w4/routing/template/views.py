@@ -6,7 +6,7 @@ from django.http import HttpResponse
 def echo(request):
     # print(request.GET)
     return render(request, 'echo.html', {
-        'statement': request.META.get('X-Print-Statement', ''),
+        'statement': request.META.get('HTTP_X_PRINT_STATEMENT', ''),
         'get': request.GET.items(),
         'post': request.POST.items()
     })
