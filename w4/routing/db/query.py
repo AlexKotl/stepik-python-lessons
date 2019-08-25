@@ -31,20 +31,21 @@ def create():
 
 
 def edit_all():
-    pass
+    return User.objects.update(first_name='uu1')
 
 
 def edit_u1_u2():
-    pass
+    return User.objects.filter(first_name__in=['u1', 'u2']).update(first_name='uu1')
 
 
 def delete_u1():
-    pass
+    return User.objects.filter(first_name="u1").delete()
 
 
 def unsubscribe_u2_from_blogs():
-    pass
-
+    for user in User.objects.filter(first_name="u1"):
+        for blog in Blog.objects.all():
+            blog.subscribers.remove(user)
 
 def get_topic_created_grated():
     return Topic.objects.filter(created__gt='2018-01-01')
@@ -76,12 +77,12 @@ def get_topic_by_u1():
 
 
 def get_user_that_dont_have_blog():
-    pass
+    return User.objects.annotate(blog_count=Count("blog")).filter(blog_count=0).order_by("id")
 
 
 def get_topic_that_like_all_users():
-    pass
+    return Topic.objects.annotate(likes_count=Count("likes")).filter(likes_count=User.objects.all().count())
 
 
 def get_topic_that_dont_have_like():
-    pass
+    return Topic.objects.annotate(likes_count=Count("likes")).filter(likes_count=0)
