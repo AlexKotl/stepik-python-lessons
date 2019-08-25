@@ -47,15 +47,15 @@ def unsubscribe_u2_from_blogs():
 
 
 def get_topic_created_grated():
-    pass
+    return Topic.objects.filter(created__gt='2018-01-01')
 
 
 def get_topic_title_ended():
-    pass
+    return Topic.objects.filter(title__endswith="content")
 
 
 def get_user_with_limit():
-    pass
+    return User.objects.filter().order_by('-id')[:2]
 
 
 def get_topic_count():
