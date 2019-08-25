@@ -59,19 +59,20 @@ def get_user_with_limit():
 
 
 def get_topic_count():
-    pass
+    return Topic.objects.annotate(topic_count=Count("blog"))
 
 
 def get_avg_topic_count():
-    pass
+    # not sure?
+    return Topic.objects.annotate(Avg("blog"))
 
 
 def get_blog_that_have_more_than_one_topic():
-    pass
+    return Blog.objects.annotate(topic_count=Count("topic")).filter(topic_count__gt=0)
 
 
 def get_topic_by_u1():
-    pass
+    return Topic.objects.filter(author__first_name="u1")
 
 
 def get_user_that_dont_have_blog():
