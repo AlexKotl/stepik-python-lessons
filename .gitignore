@@ -3,3 +3,4 @@ __pycache__
 /w4/routing/env
 /w4/routing/db.sqlite3
 *.zip
+/w5/somemart/Pipfile.lock
