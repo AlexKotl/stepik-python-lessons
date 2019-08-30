@@ -30,5 +30,21 @@ class GetItemView(View):
     """
 
     def get(self, request, item_id):
-        # Здесь должен быть ваш код
-        return JsonResponse(data, status=200)
+        try:
+            item = Item.objects.get(pk=item_id)
+            data = {
+                "id": item.id,
+                "title": item.title,
+                "description": "Очень вкусный сыр, да еще и российский.",
+                "price": 100,
+                "reviews": [{ 
+                    "id": 95,
+                    "text": "Best. Cheese. Ever.",
+                    "grade": 9
+                }] 
+            }
+            return JsonResponse(data, status=200)
+            
+        except Item.DoesNotExist:
+            return JsonResponse({"message": "Item not found"}, status=404)
+        
