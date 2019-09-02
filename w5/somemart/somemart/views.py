@@ -14,11 +14,22 @@ SCHEMA = {
     "$id": "http://example.com/product.schema.json",
     "type": "object",
     "properties": {
+        "title": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+        },
+        "description": {
+            "type": "string",
+            "maxLength": 1024,
+        },
         "price": {
-            "type": "integer"
-        }
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000,
+        },
     },
-    "required": [ "price" ]
+    "required": [ "title", "description", "price" ]
 }
 
 @method_decorator(csrf_exempt, name='dispatch')
