@@ -1,5 +1,6 @@
 import json
 
+import django
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from jsonschema import validate
@@ -80,6 +81,8 @@ class PostReviewView(View):
             validate(data, SCHEMA_REVIEW)
             review = Review(text=data["text"], grade=data["grade"], item=Item.objects.get(pk=item_id))
             review.save()
+        except django.core.exceptions.ObjectDoesNotExist:
+            return JsonResponse({ "error": "Cant find item" }, status=404)
         except json.decoder.JSONDecodeError:
             return JsonResponse({ "error": "Cant parse JSON" }, status=400)
         except ValidationError:
