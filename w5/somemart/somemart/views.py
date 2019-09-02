@@ -25,11 +25,30 @@ SCHEMA = {
         },
         "price": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 1,
             "maximum": 1000000,
         },
     },
     "required": [ "title", "description", "price" ]
+}
+
+SCHEMA_REVIEW = {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "type": "object",
+    "properties": {
+        "text": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+        },
+        "grade": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+        },
+    },
+    "required": [ "text", "grade" ]
 }
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -56,8 +75,19 @@ class PostReviewView(View):
     """View для создания отзыва о товаре."""
 
     def post(self, request, item_id):
-        # Здесь должен быть ваш код
-        return JsonResponse(data, status=201)
+        try:
+            data = json.loads(request.body)
+            validate(data, SCHEMA_REVIEW)
+            review = Review(text=data["text"], grade=data["grade"], item=Item.objects.get(pk=item_id))
+            review.save()
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({ "error": "Cant parse JSON" }, status=400)
+        except ValidationError:
+            return JsonResponse({ "error": "Validation error" }, status=400)
+        except Exception as e:
+            return JsonResponse({ "error": "Something went wrong", "message": str(e) }, status=400)
+            
+        return JsonResponse({ "id": review.pk }, status=201)
 
 
 class GetItemView(View):
@@ -70,16 +100,23 @@ class GetItemView(View):
     def get(self, request, item_id):
         try:
             item = Item.objects.get(pk=item_id)
+            reviews = []
+            
+            reviews_data = Review.objects.filter(item=item).order_by('-pk')[:5]
+            
+            for r in reviews_data:
+                reviews.append({
+                    "id": r.pk,
+                    "text": r.text,
+                    "grade": r.grade
+                })
+            
             data = {
                 "id": item.id,
                 "title": item.title,
                 "description": item.description,
                 "price": item.price,
-                "reviews": [{ 
-                    "id": 95,
-                    "text": "Best. Cheese. Ever.",
-                    "grade": 9
-                }] 
+                "reviews": reviews
             }
             return JsonResponse(data, status=200)
             
