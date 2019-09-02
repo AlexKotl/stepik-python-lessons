@@ -3,6 +3,7 @@ import json
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from jsonschema import validate
+from jsonschema.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
@@ -25,12 +26,15 @@ class AddItemView(View):
     """View для создания товара."""
 
     def post(self, request):
-        
         try:
             data = json.loads(request.body)
             validate(data, SCHEMA)
-            item = Item(title=data.title, description=data.description, price=price.price)
+            item = Item(title=data["title"], description=data["description"], price=data["price"])
             item.save()
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({ "error": "Cant parse JSON" }, status=400)
+        except ValidationError:
+            return JsonResponse({ "error": "Validation error" }, status=400)
         except:
             return JsonResponse({ "error": "Something went wrong" }, status=400)
             
