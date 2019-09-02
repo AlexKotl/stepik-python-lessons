@@ -2,18 +2,41 @@ import json
 
 from django.http import HttpResponse, JsonResponse
 from django.views import View
+from jsonschema import validate
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from .models import Item, Review
 
+SCHEMA = {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "type": "object",
+    "properties": {
+        "price": {
+            "type": "integer"
+        }
+    },
+    "required": [ "price" ]
+}
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AddItemView(View):
     """View для создания товара."""
 
     def post(self, request):
-        # Здесь должен быть ваш код
-        return JsonResponse(data, status=201)
+        
+        try:
+            data = json.loads(request.body)
+            validate(data, SCHEMA)
+            item = Item(title=data.title, description=data.description, price=price.price)
+            item.save()
+        except:
+            return JsonResponse({ "error": "Something went wrong" }, status=400)
+            
+        return JsonResponse({ "id": item.pk }, status=201)
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class PostReviewView(View):
     """View для создания отзыва о товаре."""
 
@@ -35,8 +58,8 @@ class GetItemView(View):
             data = {
                 "id": item.id,
                 "title": item.title,
-                "description": "Очень вкусный сыр, да еще и российский.",
-                "price": 100,
+                "description": item.description,
+                "price": item.price,
                 "reviews": [{ 
                     "id": 95,
                     "text": "Best. Cheese. Ever.",
