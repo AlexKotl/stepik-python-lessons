@@ -24,6 +24,7 @@ SCHEMA = {
         },
         "description": {
             "type": "string",
+            "minLength": 1,
             "maxLength": 1024,
         },
         "price": {
